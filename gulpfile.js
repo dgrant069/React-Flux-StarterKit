@@ -1,5 +1,7 @@
 var gulp = require('gulp'),
 	gutil = require('gulp-util'),
+	sourcemaps = require("gulp-sourcemaps"),
+	babel = require("gulp-babel"),
 	sass = require('gulp-ruby-sass'),
 	autoprefixer = require('gulp-autoprefixer'),
 	minifycss = require('gulp-minify-css'),
@@ -34,7 +36,10 @@ gulp.task('scripts', function() {
 	return gulp.src('src/**/*.js')
 		.pipe(jshint('.jshintrc'))
 		.pipe(jshint.reporter('default'))
-		.pipe(concat('main.js'))
+		.pipe(sourcemaps.init())
+    	.pipe(babel())
+    	.pipe(concat('main.js'))
+		.pipe(sourcemaps.write("."))
 		.pipe(gulp.dest('build/js'))
 		.pipe(rename({suffix: '.min'}))
 		.pipe(uglify())
